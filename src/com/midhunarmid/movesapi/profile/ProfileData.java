@@ -24,7 +24,6 @@ public class ProfileData {
 	/** ***************************************************************************************************** **/	
 	/** ******************* Utility methods   *************************************************************** **/
 	
-	
 	/** Get a unique identifier of the user <br><br> 
 	 *  returns <b><i>def</b></i> if an error occurred **/
 	public long getUserID_Long(long def) {

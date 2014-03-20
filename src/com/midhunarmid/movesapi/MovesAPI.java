@@ -1,5 +1,7 @@
 package com.midhunarmid.movesapi;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.app.DialogFragment;
@@ -12,6 +14,7 @@ import com.midhunarmid.movesapi.auth.AuthData;
 import com.midhunarmid.movesapi.auth.MovesLoginFragment;
 import com.midhunarmid.movesapi.profile.ProfileData;
 import com.midhunarmid.movesapi.servercalls.HTTPCall;
+import com.midhunarmid.movesapi.summary.SummaryListData;
 import com.midhunarmid.movesapi.util.MovesAPIPreferences;
 
 /**
@@ -39,6 +42,9 @@ public class MovesAPI {
 	
 	/* Moves API path to get user profile data */
 	public final static String 	API_PATH_PROFILE		= "/user/profile";
+	
+	/* Moves API path to get user profile data */
+	public final static String 	API_PATH_SUMMARY		= "/user/summary/daily";
 	
 	/* Moves Client Application Details */
 	private final String mClientID; 
@@ -112,7 +118,7 @@ public class MovesAPI {
 	 * @param parent : Call to this method should be initiated from a {@link FragmentActivity}. We need to show some
 	 * {@link DialogFragment} while processing authorization flow.
 	 */
-	public static void showAuthDialog(MovesHandler<AuthData> handler, FragmentActivity parent) {
+	public static void authenticate(MovesHandler<AuthData> handler, FragmentActivity parent) {
 		FragmentTransaction ft = parent.getSupportFragmentManager().beginTransaction();
 		Fragment prev = parent.getSupportFragmentManager().findFragmentByTag("auth-dialog");
 		if (null != prev) {
@@ -137,8 +143,84 @@ public class MovesAPI {
 	 * @param handler : An implemented {@link MovesHandler} with {@link ProfileData} type. This handler will get notified
 	 * when the request completes.
 	 */
-	public static void getProfile(final MovesHandler<ProfileData> handler) {
+	public static void getProfile(MovesHandler<ProfileData> handler) {
 		HTTPCall.getProfile(handler);
+	}
+	
+	/**
+	 * Get daily activity summaries for user, including step count, distance and duration for each activity (if applicable).
+	 * Final summary for a particular date will only be available at earliest after midnight in the user’s current time zone.
+	 * @see <a href="https://dev.moves-app.com/docs/api_summaries">Moves Developer Page for Daily Summaries</a>
+ 
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
+	 * This handler will get notified when the request completes.
+	 * @param date : date in yyyyMMdd or yyyy-MM-dd format
+	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
+	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
+	 */
+	public static void getSummary_SingleDay(MovesHandler<ArrayList<SummaryListData>> handler, String date, String updatedSince) {
+		HTTPCall.getDailySummaryList(handler, "/" + date, null, null, null, updatedSince);
+	}
+	
+	/**
+	 * Get daily activity summaries for user, including step count, distance and duration for each activity (if applicable).
+	 * Final summary for a particular date will only be available at earliest after midnight in the user’s current time zone.
+	 * @see <a href="https://dev.moves-app.com/docs/api_summaries">Moves Developer Page for Daily Summaries</a>
+ 
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
+	 * This handler will get notified when the request completes.
+	 * @param week : A specific week in yyyy-’W’ww format, for example 2013-W09
+	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
+	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
+	 */
+	public static void getSummary_SpecificWeek(MovesHandler<ArrayList<SummaryListData>> handler, String week, String updatedSince) {
+		HTTPCall.getDailySummaryList(handler, "/" + week, null, null, null, updatedSince);
+	}
+	
+	/**
+	 * Get daily activity summaries for user, including step count, distance and duration for each activity (if applicable).
+	 * Final summary for a particular date will only be available at earliest after midnight in the user’s current time zone.
+	 * @see <a href="https://dev.moves-app.com/docs/api_summaries">Moves Developer Page for Daily Summaries</a>
+ 
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
+	 * This handler will get notified when the request completes.
+	 * @param month : A specific month in yyyyMM or yyyy-MM format
+	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
+	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
+	 */
+	public static void getSummary_SpecificMonth(MovesHandler<ArrayList<SummaryListData>> handler, String month, String updatedSince) {
+		HTTPCall.getDailySummaryList(handler, "/" + month, null, null, null, updatedSince);
+	}
+	
+	/**
+	 * Get daily activity summaries for user, including step count, distance and duration for each activity (if applicable).
+	 * Final summary for a particular date will only be available at earliest after midnight in the user’s current time zone.
+	 * @see <a href="https://dev.moves-app.com/docs/api_summaries">Moves Developer Page for Daily Summaries</a>
+ 
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
+	 * This handler will get notified when the request completes.
+	 * @param from :  Range start in yyyyMMdd or yyyy-MM-dd format
+	 * @param to : Range end in yyyyMMdd or yyyy-MM-dd format
+	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
+	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
+	 */
+	public static void getSummary_WithinRange(MovesHandler<ArrayList<SummaryListData>> handler, String from, String to, String updatedSince) {
+		HTTPCall.getDailySummaryList(handler, null, from, to, null, updatedSince);
+	}
+	
+	/**
+	 * Get daily activity summaries for user, including step count, distance and duration for each activity (if applicable).
+	 * Final summary for a particular date will only be available at earliest after midnight in the user’s current time zone.
+	 * @see <a href="https://dev.moves-app.com/docs/api_summaries">Moves Developer Page for Daily Summaries</a>
+ 
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
+	 * This handler will get notified when the request completes.
+	 * @param pastDays :  How many past days to return, including today (in users current time zone)
+	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
+	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
+	 */
+	public static void getSummary_PastDays(MovesHandler<ArrayList<SummaryListData>> handler, String pastDays, String updatedSince) {
+		HTTPCall.getDailySummaryList(handler, null, null, null, pastDays, updatedSince);
 	}
 	
 	/** ***************************************************************************************************** **/	

@@ -1,4 +1,4 @@
-﻿package com.midhunarmid.movesapi.util;
+package com.midhunarmid.movesapi.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

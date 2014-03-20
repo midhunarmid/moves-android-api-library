@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc" >
+
+    <target name="javadoc" >
+
+        <javadoc
+            access="public"
+            additionalparam="-bootclasspath E:\Softwares\Android\AndroidSDK\platforms\android-18\android.jar "
+            author="true"
+            classpath="libs/android-support-v4.jar"
+            destdir="doc"
+            nodeprecated="false"
+            nodeprecatedlist="false"
+            noindex="false"
+            nonavbar="false"
+            notree="false"
+            packagenames="com.midhunarmid.movesapi.profile,com.midhunarmid.movesapi.servercalls,com.midhunarmid.movesapi.auth,com.midhunarmid.movesapi.summary,com.midhunarmid.movesapi.util"
+            source="1.6"
+            sourcefiles="src/com/midhunarmid/movesapi/MovesAPI.java,src/com/midhunarmid/movesapi/MovesHandler.java"
+            sourcepath="gen;src"
+            splitindex="true"
+            use="true"
+            version="true" >
+
+            <link href="file:/E:/Softwares/Android/AndroidSDK/docs/reference" />
+        </javadoc>
+    </target>
+
+</project>
