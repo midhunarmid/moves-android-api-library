@@ -39,17 +39,60 @@
           <h1>
 <a name="moves-android-api-library" class="anchor" href="#moves-android-api-library"><span class="octicon octicon-link"></span></a>moves-android-api-library</h1>
 
-<p>{Under development}</p>
+<p>Here I'm just trying to make a library to deal with Moves API calls from android. Developers can use this library project to fetch data from Moves. </p>
 
 <p>Completed API Methods:</p>
 
 <ul>
 <li>Authentication</li>
 <li>Profile</li>
+<li>Summary</li>
 <li>... more will update soon</li>
-</ul><p>Moves API library to use with android. (Supports Android version 2.2 and above)</p>
+</ul><p>Remaining Pipelined Tasks:</p>
 
-<p>Please feel free to use this library, and give your feedbacks to improve it.</p>
+<ul>
+<li>Activities</li>
+<li>Places</li>
+<li>Storyline</li>
+<li>Activity list</li>
+<li>Notifications</li>
+</ul><h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage:</h2>
+
+<p>You can just use the static methods from the main API class 'MovesAPI' after calling MovesAPI.init(...) method.
+All completed methods are well documented, so hope you will not face any difficulties while developing.
+The source is open to all (will be always) and you are free to modify it in anyway, but please update it here too. ;)</p>
+
+<p>Some sample usages of MovesAPI static methods are as follows :</p>
+
+<ul>
+<li><code>MovesAPI.authenticate(...);</code></li>
+<li><code>MovesAPI.getAuthData();</code></li>
+<li><code>MovesAPI.getProfile(...);</code></li>
+<li><code>MovesAPI.getSummary_SingleDay(...);</code></li>
+<li><code>MovesAPI.getSummary_SpecificWeek(...);</code></li>
+<li><code>MovesAPI.getSummary_SpecificMonth(...);</code></li>
+<li><code>MovesAPI.getSummary_WithinRange(...);</code></li>
+<li><code>MovesAPI.getSummary_PastDays(...);</code></li>
+</ul><p>You will get notified with success and failure responses at :
+<code></code></p>
+
+<pre><code>private MovesHandler&lt;&lt;MovesData&gt;&gt; authDialogHandler = new MovesHandler&lt;&lt;MovesData&gt;&gt;() {
+    @Override
+    public void onSuccess(&lt;MovesData&gt; result) {
+
+    }
+
+    @Override
+    public void onFailure(MovesStatus status, String message) {
+
+    }
+};
+</code></pre>
+
+<p></p>
+
+<p><i>Please feel free to use this library, and give your feedbacks to improve it.</i></p>
         </article>
       </div>
     </div>
