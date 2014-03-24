@@ -1,3 +1,4 @@
-int id webView 0x7f040000
-int layout webview 0x7f020000
-int string loading 0x7f030000
+int drawable iclauncher 0x7f020000
+int id webView 0x7f050000
+int layout webview 0x7f030000
+int string loading 0x7f040000

@@ -12,25 +12,6 @@ import org.json.JSONObject;
  * @see <a href="https://dev.moves-app.com/docs/api_summaries">Moves Developer Page for Daily Summaries</a>
  */
 public class SummaryListData {
-	
-	public static enum SUMMARY_TYPES {
-		DATE,
-		WEEK,
-		MONTH,
-		DATERANGE,
-		PASTDAYS;
-		
-		private String path;
-		
-		public String getPath() {
-			return path;
-		}
-		
-		public void setPath(String value) {
-			path = value;
-		}
-	}
-	
 	public static final String 		DATEFORMAT		= "yyyyMMdd";
 	
 	private String					date;
