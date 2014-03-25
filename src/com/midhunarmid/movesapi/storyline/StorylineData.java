@@ -8,6 +8,11 @@ import org.json.JSONObject;
 import com.midhunarmid.movesapi.segment.SegmentData;
 import com.midhunarmid.movesapi.summary.SummaryData;
 
+/**
+ * This class holds the Storyline Data of a Moves User, and some related methods to handle those data
+ * @author Midhu
+ * @see <a href="https://dev.moves-app.com/docs/api_storyline">Moves Developer Page for Storyline</a>
+ */
 public class StorylineData {
 	private String date;
 	private ArrayList<SummaryData> summary;
@@ -19,19 +24,27 @@ public class StorylineData {
 	/** ***************************************************************************************************** **/	
 	/** ******************* Getter methods    *************************************************************** **/
 	
-	
+	/** Storyline date, in format yyyyMMdd **/
 	public String getDate() {
 		return date;
 	}
+	
+	/** {@link ArrayList} of {@link SummaryData} **/
 	public ArrayList<SummaryData> getSummary() {
 		return summary;
 	}
+	
+	/** {@link ArrayList} of {@link SegmentData} **/
 	public ArrayList<SegmentData> getSegments() {
 		return segments;
 	}
+	
+	/** Daily idle burn in kcal. Available if user has at least once enabled calories **/
 	public String getCaloriesIdle() {
 		return caloriesIdle;
 	}
+	
+	/** When the storyline was last updated in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, always in UTC **/
 	public String getLastUpdate() {
 		return lastUpdate;
 	}
@@ -40,18 +53,27 @@ public class StorylineData {
 	/** ***************************************************************************************************** **/	
 	/** ******************* Setter methods    *************************************************************** **/
 	
+	/** Storyline date, in format yyyyMMdd **/
 	public void setDate(String date) {
 		this.date = date;
 	}
+	
+	/** {@link ArrayList} of {@link SummaryData} **/
 	public void setSummary(ArrayList<SummaryData> summary) {
 		this.summary = summary;
 	}
+	
+	/** {@link ArrayList} of {@link SegmentData} **/
 	public void setSegments(ArrayList<SegmentData> segments) {
 		this.segments = segments;
 	}
+	
+	/** Daily idle burn in kcal. Available if user has at least once enabled calories **/
 	public void setCaloriesIdle(String caloriesIdle) {
 		this.caloriesIdle = caloriesIdle;
 	}
+	
+	/** When the summary data was last updated in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, always in UTC **/
 	public void setLastUpdate(String lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
@@ -72,6 +94,7 @@ public class StorylineData {
 			storylineData.caloriesIdle	= jsonObject.optString("caloriesIdle");
 			storylineData.lastUpdate	= jsonObject.optString("lastUpdate");
 			storylineData.summary		= new ArrayList<SummaryData>();
+			storylineData.segments		= new ArrayList<SegmentData>();
 			
 			JSONArray summariesJsonArray= jsonObject.optJSONArray("summary");
 			if (summariesJsonArray != null) {

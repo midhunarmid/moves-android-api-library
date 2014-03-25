@@ -84,8 +84,8 @@ public class MovesLoginFragment extends DialogFragment {
 		mDialog.setMessage(getString(R.string.loading));
 		mDialog.setCancelable(false);
 		
-        mAuthWebView = (WebView) view.findViewById(R.id.webView);
-        
+		mAuthWebView = (WebView) getView().findViewById(R.id.webView);
+		
         try {
             Uri uri = createAuthWithAppUri("moves", "app", "/authorize").build();
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);

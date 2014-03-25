@@ -5,6 +5,14 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.midhunarmid.movesapi.storyline.StorylineData;
+
+/**
+ * This class holds the Place Data (usually for {@link StorylineData}), and some related methods to handle those data
+ * @author Midhu
+ * @see <a href="https://dev.moves-app.com/docs/api_storyline">Read <i>Place</i> Section from 
+ * Moves Developer Page for Storyline</a>
+ */
 public class PlaceData {
 	private String id;
 	private String name;

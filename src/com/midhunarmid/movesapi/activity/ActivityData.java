@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * This class holds the Activity Data, and some related methods to handle those data
+ * @author Midhu
+ * @see <a href="https://dev.moves-app.com/docs/api_storyline">Read <i>Activity</i> Section from 
+ * Moves Developer Page for Storyline</a>
+ */
 public class ActivityData {
 	private String activity;
 	private String group;

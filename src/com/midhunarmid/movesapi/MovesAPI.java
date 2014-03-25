@@ -10,12 +10,15 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
+import com.midhunarmid.movesapi.activity.TrackPointsData;
 import com.midhunarmid.movesapi.auth.AuthData;
 import com.midhunarmid.movesapi.auth.MovesLoginFragment;
 import com.midhunarmid.movesapi.profile.ProfileData;
 import com.midhunarmid.movesapi.servercalls.HTTPCall;
+import com.midhunarmid.movesapi.storyline.StorylineData;
 import com.midhunarmid.movesapi.summary.SummaryListData;
 import com.midhunarmid.movesapi.util.MovesAPIPreferences;
+import com.midhunarmid.movesapi.util.MovesStatus;
 
 /**
  * This class have static methods to deal with all API calls to Moves Server. Use <code>init()</code> method before 
@@ -43,8 +46,11 @@ public class MovesAPI {
 	/* Moves API path to get user profile data */
 	public final static String 	API_PATH_PROFILE		= "/user/profile";
 	
-	/* Moves API path to get user profile data */
+	/* Moves API path to get user summary */
 	public final static String 	API_PATH_SUMMARY		= "/user/summary/daily";
+	
+	/* Moves API path to get user story line */
+	public final static String 	API_PATH_STORYLINE		= "/user/storyline/daily";
 	
 	/* Moves Client Application Details */
 	private final String mClientID; 
@@ -144,14 +150,17 @@ public class MovesAPI {
 	 * when the request completes.
 	 */
 	public static void getProfile(MovesHandler<ProfileData> handler) {
-		HTTPCall.getProfile(handler);
+		if (AuthData.isAuthenticated()) {
+			HTTPCall.getProfile(handler);
+		} else {
+			handler.onFailure(MovesStatus.NOT_AUTHENTICATED, "You are not yet authenticated with required scopes!");
+		}
 	}
 	
 	/**
 	 * Get daily activity summaries for user, including step count, distance and duration for each activity (if applicable).
 	 * Final summary for a particular date will only be available at earliest after midnight in the user’s current time zone.
 	 * @see <a href="https://dev.moves-app.com/docs/api_summaries">Moves Developer Page for Daily Summaries</a>
- 
 	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
 	 * This handler will get notified when the request completes.
 	 * @param date : date in yyyyMMdd or yyyy-MM-dd format
@@ -159,14 +168,17 @@ public class MovesAPI {
 	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
 	 */
 	public static void getSummary_SingleDay(MovesHandler<ArrayList<SummaryListData>> handler, String date, String updatedSince) {
-		HTTPCall.getDailySummaryList(handler, "/" + date, null, null, null, updatedSince);
+		if (AuthData.isAuthenticated()) {
+			HTTPCall.getDailySummaryList(handler, "/" + date, null, null, null, updatedSince);
+		} else {
+			handler.onFailure(MovesStatus.NOT_AUTHENTICATED, "You are not yet authenticated with required scopes!");
+		}
 	}
 	
 	/**
 	 * Get daily activity summaries for user, including step count, distance and duration for each activity (if applicable).
 	 * Final summary for a particular date will only be available at earliest after midnight in the user’s current time zone.
 	 * @see <a href="https://dev.moves-app.com/docs/api_summaries">Moves Developer Page for Daily Summaries</a>
- 
 	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
 	 * This handler will get notified when the request completes.
 	 * @param week : A specific week in yyyy-’W’ww format, for example 2013-W09
@@ -174,14 +186,17 @@ public class MovesAPI {
 	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
 	 */
 	public static void getSummary_SpecificWeek(MovesHandler<ArrayList<SummaryListData>> handler, String week, String updatedSince) {
-		HTTPCall.getDailySummaryList(handler, "/" + week, null, null, null, updatedSince);
+		if (AuthData.isAuthenticated()) {
+			HTTPCall.getDailySummaryList(handler, "/" + week, null, null, null, updatedSince);
+		} else {
+			handler.onFailure(MovesStatus.NOT_AUTHENTICATED, "You are not yet authenticated with required scopes!");
+		}
 	}
 	
 	/**
 	 * Get daily activity summaries for user, including step count, distance and duration for each activity (if applicable).
 	 * Final summary for a particular date will only be available at earliest after midnight in the user’s current time zone.
 	 * @see <a href="https://dev.moves-app.com/docs/api_summaries">Moves Developer Page for Daily Summaries</a>
- 
 	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
 	 * This handler will get notified when the request completes.
 	 * @param month : A specific month in yyyyMM or yyyy-MM format
@@ -189,14 +204,17 @@ public class MovesAPI {
 	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
 	 */
 	public static void getSummary_SpecificMonth(MovesHandler<ArrayList<SummaryListData>> handler, String month, String updatedSince) {
-		HTTPCall.getDailySummaryList(handler, "/" + month, null, null, null, updatedSince);
+		if (AuthData.isAuthenticated()) {
+			HTTPCall.getDailySummaryList(handler, "/" + month, null, null, null, updatedSince);
+		} else {
+			handler.onFailure(MovesStatus.NOT_AUTHENTICATED, "You are not yet authenticated with required scopes!");
+		}
 	}
 	
 	/**
 	 * Get daily activity summaries for user, including step count, distance and duration for each activity (if applicable).
 	 * Final summary for a particular date will only be available at earliest after midnight in the user’s current time zone.
 	 * @see <a href="https://dev.moves-app.com/docs/api_summaries">Moves Developer Page for Daily Summaries</a>
- 
 	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
 	 * This handler will get notified when the request completes.
 	 * @param from :  Range start in yyyyMMdd or yyyy-MM-dd format
@@ -205,14 +223,17 @@ public class MovesAPI {
 	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
 	 */
 	public static void getSummary_WithinRange(MovesHandler<ArrayList<SummaryListData>> handler, String from, String to, String updatedSince) {
-		HTTPCall.getDailySummaryList(handler, null, from, to, null, updatedSince);
+		if (AuthData.isAuthenticated()) {
+			HTTPCall.getDailySummaryList(handler, null, from, to, null, updatedSince);
+		} else {
+			handler.onFailure(MovesStatus.NOT_AUTHENTICATED, "You are not yet authenticated with required scopes!");
+		}
 	}
 	
 	/**
 	 * Get daily activity summaries for user, including step count, distance and duration for each activity (if applicable).
 	 * Final summary for a particular date will only be available at earliest after midnight in the user’s current time zone.
 	 * @see <a href="https://dev.moves-app.com/docs/api_summaries">Moves Developer Page for Daily Summaries</a>
- 
 	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
 	 * This handler will get notified when the request completes.
 	 * @param pastDays :  How many past days to return, including today (in users current time zone)
@@ -220,7 +241,112 @@ public class MovesAPI {
 	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
 	 */
 	public static void getSummary_PastDays(MovesHandler<ArrayList<SummaryListData>> handler, String pastDays, String updatedSince) {
-		HTTPCall.getDailySummaryList(handler, null, null, null, pastDays, updatedSince);
+		if (AuthData.isAuthenticated()) {
+			HTTPCall.getDailySummaryList(handler, null, null, null, pastDays, updatedSince);
+		} else {
+			handler.onFailure(MovesStatus.NOT_AUTHENTICATED, "You are not yet authenticated with required scopes!");
+		}
+	}
+	
+	/**
+	 * Get daily storylines for user.
+	 * @see <a href="https://dev.moves-app.com/docs/api_storyline">Moves Developer Page for Daily Storyline</a>
+	 * @see SummaryListData
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link StorylineData}. 
+	 * This handler will get notified when the request completes.
+	 * @param date : date in yyyyMMdd or yyyy-MM-dd format
+	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
+	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
+	 * @param needTrackPoints : if true, the returned activities also include {@link TrackPointsData} information. 
+	 * Including track points limits the query range to 7 days.
+	 */
+	public static void getStoryline_SingleDay(MovesHandler<ArrayList<StorylineData>> handler, String date, String updatedSince, boolean needTrackPoints) {
+		if (AuthData.isAuthenticated()) {
+			HTTPCall.getDailyStorylineList(handler, "/" + date, null, null, null, updatedSince, needTrackPoints);
+		} else {
+			handler.onFailure(MovesStatus.NOT_AUTHENTICATED, "You are not yet authenticated with required scopes!");
+		}
+	}
+	
+	/**
+	 * Get daily storylines for user.
+	 * @see <a href="https://dev.moves-app.com/docs/api_storyline">Moves Developer Page for Daily Storyline</a>
+	 * @see SummaryListData
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
+	 * This handler will get notified when the request completes.
+	 * @param week : A specific week in yyyy-’W’ww format, for example 2013-W09
+	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
+	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
+	 * @param needTrackPoints : if true, the returned activities also include {@link TrackPointsData} information. 
+	 * Including track points limits the query range to 7 days.
+	 */
+	public static void getStoryline_SpecificWeek(MovesHandler<ArrayList<StorylineData>> handler, String week, String updatedSince, boolean needTrackPoints) {
+		if (AuthData.isAuthenticated()) {
+			HTTPCall.getDailyStorylineList(handler, "/" + week, null, null, null, updatedSince, needTrackPoints);
+		} else {
+			handler.onFailure(MovesStatus.NOT_AUTHENTICATED, "You are not yet authenticated with required scopes!");
+		}
+	}
+	
+	/**
+	 * Get daily storylines for user.
+	 * @see <a href="https://dev.moves-app.com/docs/api_storyline">Moves Developer Page for Daily Storyline</a>
+	 * @see SummaryListData
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
+	 * This handler will get notified when the request completes.
+	 * @param month : A specific month in yyyyMM or yyyy-MM format
+	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
+	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
+	 * @param needTrackPoints : if true, the returned activities also include {@link TrackPointsData} information. 
+	 * Including track points limits the query range to 7 days.
+	 */
+	public static void getStoryline_SpecificMonth(MovesHandler<ArrayList<StorylineData>> handler, String month, String updatedSince, boolean needTrackPoints) {
+		if (AuthData.isAuthenticated()) {
+			HTTPCall.getDailyStorylineList(handler, "/" + month, null, null, null, updatedSince, needTrackPoints);
+		} else {
+			handler.onFailure(MovesStatus.NOT_AUTHENTICATED, "You are not yet authenticated with required scopes!");
+		}
+	}
+	
+	/**
+	 * Get daily storylines for user.
+	 * @see <a href="https://dev.moves-app.com/docs/api_storyline">Moves Developer Page for Daily Storyline</a>
+	 * @see SummaryListData
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
+	 * This handler will get notified when the request completes.
+	 * @param from :  Range start in yyyyMMdd or yyyy-MM-dd format
+	 * @param to : Range end in yyyyMMdd or yyyy-MM-dd format
+	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
+	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
+	 * @param needTrackPoints : if true, the returned activities also include {@link TrackPointsData} information. 
+	 * Including track points limits the query range to 7 days.
+	 */
+	public static void getStoryline_WithinRange(MovesHandler<ArrayList<StorylineData>> handler, String from, String to, String updatedSince, boolean needTrackPoints) {
+		if (AuthData.isAuthenticated()) {
+			HTTPCall.getDailyStorylineList(handler, null, from, to, null, updatedSince, needTrackPoints);
+		} else {
+			handler.onFailure(MovesStatus.NOT_AUTHENTICATED, "You are not yet authenticated with required scopes!");
+		}
+	}
+	
+	/**
+	 * Get daily storylines for user.
+	 * @see <a href="https://dev.moves-app.com/docs/api_storyline">Moves Developer Page for Daily Storyline</a>
+	 * @see SummaryListData
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
+	 * This handler will get notified when the request completes.
+	 * @param pastDays :  How many past days to return, including today (in users current time zone)
+	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
+	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
+	 * @param needTrackPoints : if true, the returned activities also include {@link TrackPointsData} information. 
+	 * Including track points limits the query range to 7 days.
+	 */
+	public static void getStoryline_PastDays(MovesHandler<ArrayList<StorylineData>> handler, String pastDays, String updatedSince, boolean needTrackPoints) {
+		if (AuthData.isAuthenticated()) {
+			HTTPCall.getDailyStorylineList(handler, null, null, null, pastDays, updatedSince, needTrackPoints);
+		} else {
+			handler.onFailure(MovesStatus.NOT_AUTHENTICATED, "You are not yet authenticated with required scopes!");
+		}
 	}
 	
 	/** ***************************************************************************************************** **/	

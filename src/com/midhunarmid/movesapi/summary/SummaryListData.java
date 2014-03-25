@@ -10,6 +10,7 @@ import org.json.JSONObject;
  * Final summary for a particular date will only be available at earliest after midnight in the user’s current time zone.
  * @author Midhu
  * @see <a href="https://dev.moves-app.com/docs/api_summaries">Moves Developer Page for Daily Summaries</a>
+ * @see SummaryData
  */
 public class SummaryListData {
 	public static final String 		DATEFORMAT		= "yyyyMMdd";

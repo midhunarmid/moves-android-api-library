@@ -3,6 +3,13 @@ package com.midhunarmid.movesapi.activity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.midhunarmid.movesapi.storyline.StorylineData;
+
+/**
+ * This class holds the Trackpoints Data (usually used within a {@link ActivityData}), and some related methods to handle those data
+ * @author Midhu
+ * @see {@link StorylineData} <br>{@link ActivityData}
+ */
 public class TrackPointsData {
 	private String lat;
 	private String lon;

@@ -7,6 +7,7 @@ import org.json.JSONObject;
  * This class holds the Summary Data of a Moves User, and some related methods to handle those data
  * @author Midhu
  * @see <a href="https://dev.moves-app.com/docs/api_summaries">Moves Developer Page for Daily Summaries</a>
+ * @see SummaryListData
  */
 public class SummaryData {
 	private String		activity;

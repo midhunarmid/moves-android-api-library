@@ -44,8 +44,7 @@ public class AuthData {
 	 */
 	public static AuthData getAuthData() {
 		try {
-			String authStatus = MovesAPIPreferences.getPreference(MovesAPIPreferences.MOVES_AUTHSTATUS);
-			if (authStatus.equalsIgnoreCase(MovesAPIPreferences.STATUS_YES)) {
+			if (isAuthenticated()) {
 				String accessToken 	= MovesAPIPreferences.getPreference(MovesAPIPreferences.MOVES_ACCESS);
 				String userID 		= MovesAPIPreferences.getPreference(MovesAPIPreferences.MOVES_USERID);
 				String expiresIn 	= MovesAPIPreferences.getPreference(MovesAPIPreferences.MOVES_EXPIRE);
@@ -58,6 +57,17 @@ public class AuthData {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	public static boolean isAuthenticated() {
+		try {
+			String authStatus = MovesAPIPreferences.getPreference(MovesAPIPreferences.MOVES_AUTHSTATUS);
+			if (authStatus.equalsIgnoreCase(MovesAPIPreferences.STATUS_YES)) return true;
+			else return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 	
@@ -100,9 +110,12 @@ public class AuthData {
 	 * @return <code>true</code> if token is going to expire after specified number of days, <code>false</code> otherwise. <br>
 	 * Will return <code>null</code> if an error is occurred
 	 */
-	public static Boolean isRefreshTokenNeeded(int expiresIn) {
+	public static boolean isRefreshTokenNeeded(int expiresIn) {
 		try {
 			String expiresInMillis_String = MovesAPIPreferences.getPreference(MovesAPIPreferences.MOVES_EXPIRE);
+			if (expiresInMillis_String == null || expiresInMillis_String.length() == 0) {
+				return false;
+			}
 			long expiresInMillis = Long.parseLong(expiresInMillis_String);
 			Calendar expiryTime = Calendar.getInstance();
 			expiryTime.setTimeInMillis(expiresInMillis);
@@ -110,7 +123,8 @@ public class AuthData {
 			boolean isRefreshNeeded = expiryTime.after(Calendar.getInstance());
 			return isRefreshNeeded;
 		} catch (Exception e) {
-			return null;
+			e.printStackTrace();
+			return false;
 		}
 	}
 	

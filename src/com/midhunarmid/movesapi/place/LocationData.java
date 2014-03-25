@@ -3,6 +3,13 @@ package com.midhunarmid.movesapi.place;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.midhunarmid.movesapi.storyline.StorylineData;
+
+/**
+ * This class holds the Location Data (usually used within a {@link PlaceData}), and some related methods to handle those data
+ * @author Midhu
+ * @see {@link StorylineData} <br>{@link PlaceData}
+ */
 public class LocationData {
 	private String lat;
 	private String lon;
