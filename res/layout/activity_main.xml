@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <Spinner
+        android:id="@+id/spinnerAPI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/API_Names" />
+
+    <Button
+        android:id="@+id/buttonSubmit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit" />
+
+    <ProgressBar
+        android:id="@+id/progressRequest"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/editResponse"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:inputType="textMultiLine" >
+    </EditText>
+
+</LinearLayout>
