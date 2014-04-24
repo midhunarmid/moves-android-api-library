@@ -1,25 +1,24 @@
-package com.midhunarmid.movesapi.storyline;
+package com.midhunarmid.movesapi.place;
 
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.midhunarmid.movesapi.activity.ActivityData;
 import com.midhunarmid.movesapi.segment.SegmentData;
-import com.midhunarmid.movesapi.summary.SummaryData;
-import com.midhunarmid.movesapi.summary.SummaryListData;
+import com.midhunarmid.movesapi.storyline.StorylineData;
 
 /**
- * This class holds the Storyline Data of a Moves User, and some related methods to handle those data
+ * This class holds the details about daily places for a Moves User, and some related methods to handle those data
+ * <br><br><i>{@link ActivityData} will not be there (or it will be empty) in {@link SegmentData} response</i>
  * @author Midhu
- * @see <a href="https://dev.moves-app.com/docs/api_storyline">Moves Developer Page for Storyline</a>
- * @see SummaryListData
+ * @see <a href="https://dev.moves-app.com/docs/api_places">Moves Developer Page for Places</a>
+ * @see StorylineData
  */
-public class StorylineData {
+public class StorylinePlacesData {
 	private String date;
-	private ArrayList<SummaryData> summary;
 	private ArrayList<SegmentData> segments;
-	private String caloriesIdle;
 	private String lastUpdate;
 	
 	
@@ -31,19 +30,9 @@ public class StorylineData {
 		return date;
 	}
 	
-	/** {@link ArrayList} of {@link SummaryData} **/
-	public ArrayList<SummaryData> getSummary() {
-		return summary;
-	}
-	
 	/** {@link ArrayList} of {@link SegmentData} **/
 	public ArrayList<SegmentData> getSegments() {
 		return segments;
-	}
-	
-	/** Daily idle burn in kcal. Available if user has at least once enabled calories **/
-	public String getCaloriesIdle() {
-		return caloriesIdle;
 	}
 	
 	/** When the storyline was last updated in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, always in UTC **/
@@ -60,19 +49,9 @@ public class StorylineData {
 		this.date = date;
 	}
 	
-	/** {@link ArrayList} of {@link SummaryData} **/
-	public void setSummary(ArrayList<SummaryData> summary) {
-		this.summary = summary;
-	}
-	
 	/** {@link ArrayList} of {@link SegmentData} **/
 	public void setSegments(ArrayList<SegmentData> segments) {
 		this.segments = segments;
-	}
-	
-	/** Daily idle burn in kcal. Available if user has at least once enabled calories **/
-	public void setCaloriesIdle(String caloriesIdle) {
-		this.caloriesIdle = caloriesIdle;
 	}
 	
 	/** When the summary data was last updated in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, always in UTC **/
@@ -84,29 +63,17 @@ public class StorylineData {
 	/** ******************* Parser methods    *************************************************************** **/
 	
 	/**
-	 * Parse a {@link JSONObject} from storyline {@link JSONArray}, then return the corresponding {@link StorylineData} object.
+	 * Parse a {@link JSONObject} from storyline {@link JSONArray}, then return the corresponding {@link StorylinePlacesData} object.
 	 * @param jsonObject : the storyline JSON object received from server 
-	 * @return corresponding {@link StorylineData}
+	 * @return corresponding {@link StorylinePlacesData}
 	 */
-	public static StorylineData parse(JSONObject jsonObject) {
+	public static StorylinePlacesData parse(JSONObject jsonObject) {
 		if (jsonObject != null) {
-			StorylineData storylineData = new StorylineData();
+			StorylinePlacesData storylineData = new StorylinePlacesData();
 				
 			storylineData.date			= jsonObject.optString("date");
-			storylineData.caloriesIdle	= jsonObject.optString("caloriesIdle");
 			storylineData.lastUpdate	= jsonObject.optString("lastUpdate");
-			storylineData.summary		= new ArrayList<SummaryData>();
 			storylineData.segments		= new ArrayList<SegmentData>();
-			
-			JSONArray summariesJsonArray= jsonObject.optJSONArray("summary");
-			if (summariesJsonArray != null) {
-				for (int i = 0; i < summariesJsonArray.length(); i++) {
-					JSONObject summaryJsonObject = summariesJsonArray.optJSONObject(i);
-					if (summaryJsonObject != null) {
-						storylineData.summary.add(SummaryData.parse(summaryJsonObject));
-					}
-				}
-			}
 			
 			JSONArray segmentsJsonArray= jsonObject.optJSONArray("segments");
 			if (segmentsJsonArray != null) {

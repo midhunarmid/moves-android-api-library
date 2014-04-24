@@ -52,6 +52,12 @@ public class MovesAPI {
 	/* Moves API path to get user story line */
 	public final static String 	API_PATH_STORYLINE		= "/user/storyline/daily";
 	
+	/* Moves API path to get daily activity breakdown */
+	public final static String 	API_PATH_ACTIVITIES		= "/user/activities/daily";
+	
+	/* Moves API path to get daily activity breakdown */
+	public final static String 	API_PATH_PLACES			= "/user/places/daily";
+	
 	/* Moves Client Application Details */
 	private final String mClientID; 
 	private final String mClientSecret;
@@ -272,7 +278,7 @@ public class MovesAPI {
 	 * Get daily storylines for user.
 	 * @see <a href="https://dev.moves-app.com/docs/api_storyline">Moves Developer Page for Daily Storyline</a>
 	 * @see SummaryListData
-	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link StorylineData}. 
 	 * This handler will get notified when the request completes.
 	 * @param week : A specific week in yyyy-’W’ww format, for example 2013-W09
 	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
@@ -292,7 +298,7 @@ public class MovesAPI {
 	 * Get daily storylines for user.
 	 * @see <a href="https://dev.moves-app.com/docs/api_storyline">Moves Developer Page for Daily Storyline</a>
 	 * @see SummaryListData
-	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link StorylineData}. 
 	 * This handler will get notified when the request completes.
 	 * @param month : A specific month in yyyyMM or yyyy-MM format
 	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
@@ -312,7 +318,7 @@ public class MovesAPI {
 	 * Get daily storylines for user.
 	 * @see <a href="https://dev.moves-app.com/docs/api_storyline">Moves Developer Page for Daily Storyline</a>
 	 * @see SummaryListData
-	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link StorylineData}. 
 	 * This handler will get notified when the request completes.
 	 * @param from :  Range start in yyyyMMdd or yyyy-MM-dd format
 	 * @param to : Range end in yyyyMMdd or yyyy-MM-dd format
@@ -333,7 +339,7 @@ public class MovesAPI {
 	 * Get daily storylines for user.
 	 * @see <a href="https://dev.moves-app.com/docs/api_storyline">Moves Developer Page for Daily Storyline</a>
 	 * @see SummaryListData
-	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link SummaryListData}. 
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link StorylineData}. 
 	 * This handler will get notified when the request completes.
 	 * @param pastDays :  How many past days to return, including today (in users current time zone)
 	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
@@ -349,7 +355,108 @@ public class MovesAPI {
 		}
 	}
 	
-	/** ***************************************************************************************************** **/	
+	/**
+	 * Get daily activity breakdown for user. <br><br><i>Location/Trackpoints will not be there (or it will be null) 
+	 * in Activity response</i>
+	 * @see <a href="https://dev.moves-app.com/docs/api_activities">Moves Developer Page for Daily Activities</a>
+	 * @see SummaryListData
+	 * @see StorylineData
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link StorylineData}. 
+	 * This handler will get notified when the request completes.
+	 * @param date : date in yyyyMMdd or yyyy-MM-dd format
+	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
+	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
+	 */
+	public static void getActivities_SingleDay(MovesHandler<ArrayList<StorylineData>> handler, String date, String updatedSince) {
+		if (AuthData.isAuthenticated()) {
+			HTTPCall.getDailyActivitiesList(handler, "/" + date, null, null, null, updatedSince);
+		} else {
+			handler.onFailure(MovesStatus.NOT_AUTHENTICATED, "You are not yet authenticated with required scopes!");
+		}
+	}
+	
+	/**
+	 * Get daily activity breakdown for user. <br><br><i>Location/Trackpoints will not be there (or it will be null) 
+	 * in Activity response</i>
+	 * @see <a href="https://dev.moves-app.com/docs/api_activities">Moves Developer Page for Daily Activities</a>
+	 * @see SummaryListData
+	 * @see StorylineData
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link StorylineData}. 
+	 * This handler will get notified when the request completes.
+	 * @param week : A specific week in yyyy-’W’ww format, for example 2013-W09
+	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
+	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
+	 */
+	public static void getActivities_SpecificWeek(MovesHandler<ArrayList<StorylineData>> handler, String week, String updatedSince) {
+		if (AuthData.isAuthenticated()) {
+			HTTPCall.getDailyActivitiesList(handler, "/" + week, null, null, null, updatedSince);
+		} else {
+			handler.onFailure(MovesStatus.NOT_AUTHENTICATED, "You are not yet authenticated with required scopes!");
+		}
+	}
+	
+	/**
+	 * Get daily activity breakdown for user. <br><br><i>Location/Trackpoints will not be there (or it will be null) 
+	 * in Activity response</i>
+	 * @see <a href="https://dev.moves-app.com/docs/api_activities">Moves Developer Page for Daily Activities</a>
+	 * @see SummaryListData
+	 * @see StorylineData
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link StorylineData}. 
+	 * This handler will get notified when the request completes.
+	 * @param month : A specific month in yyyyMM or yyyy-MM format
+	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
+	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
+	 */
+	public static void getActivities_SpecificMonth(MovesHandler<ArrayList<StorylineData>> handler, String month, String updatedSince) {
+		if (AuthData.isAuthenticated()) {
+			HTTPCall.getDailyActivitiesList(handler, "/" + month, null, null, null, updatedSince);
+		} else {
+			handler.onFailure(MovesStatus.NOT_AUTHENTICATED, "You are not yet authenticated with required scopes!");
+		}
+	}
+	
+	/**
+	 * Get daily activity breakdown for user. <br><br><i>Location/Trackpoints will not be there (or it will be null) 
+	 * in Activity response</i>
+	 * @see <a href="https://dev.moves-app.com/docs/api_activities">Moves Developer Page for Daily Activities</a>
+	 * @see SummaryListData
+	 * @see StorylineData
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link StorylineData}. 
+	 * This handler will get notified when the request completes.
+	 * @param from :  Range start in yyyyMMdd or yyyy-MM-dd format
+	 * @param to : Range end in yyyyMMdd or yyyy-MM-dd format
+	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
+	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
+	 */
+	public static void getActivities_WithinRange(MovesHandler<ArrayList<StorylineData>> handler, String from, String to, String updatedSince) {
+		if (AuthData.isAuthenticated()) {
+			HTTPCall.getDailyActivitiesList(handler, null, from, to, null, updatedSince);
+		} else {
+			handler.onFailure(MovesStatus.NOT_AUTHENTICATED, "You are not yet authenticated with required scopes!");
+		}
+	}
+	
+	/**
+	 * Get daily activity breakdown for user. <br><br><i>Location/Trackpoints will not be there (or it will be null) 
+	 * in Activity response</i>
+	 * @see <a href="https://dev.moves-app.com/docs/api_activities">Moves Developer Page for Daily Activities</a>
+	 * @see SummaryListData
+	 * @see StorylineData
+	 * @param handler : An implemented {@link MovesHandler} with an {@link ArrayList} of {@link StorylineData}. 
+	 * This handler will get notified when the request completes.
+	 * @param pastDays :  How many past days to return, including today (in users current time zone)
+	 * @param updatedSince : [optional] if set, return only days which data has been updated since 
+	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
+	 */
+	public static void getActivities_PastDays(MovesHandler<ArrayList<StorylineData>> handler, String pastDays, String updatedSince) {
+		if (AuthData.isAuthenticated()) {
+			HTTPCall.getDailyActivitiesList(handler, null, null, null, pastDays, updatedSince);
+		} else {
+			handler.onFailure(MovesStatus.NOT_AUTHENTICATED, "You are not yet authenticated with required scopes!");
+		}
+	}
+	
+	/** ***************************************************************************************************** **/
 	/** ******************* Moves API Getters *************************************************************** **/
 	
 	/** Gets the singleton {@link MovesAPI} object **/
