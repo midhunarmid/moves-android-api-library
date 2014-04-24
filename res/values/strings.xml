@@ -21,6 +21,12 @@
         <!-- 12--> <item>Get Storyline Month</item>
         <!-- 13--> <item>Get Storyline Range</item>
         <!-- 14--> <item>Get Storyline Past Days</item>
+		<!-- 15--> <item>------</item>
+        <!-- 16--> <item>Get Activities Day</item>
+        <!-- 17--> <item>Get Activities Week</item>
+        <!-- 18--> <item>Get Activities Month</item>
+        <!-- 19--> <item>Get Activities Range</item>
+        <!-- 20--> <item>Get Activities Past Days</item>
     </string-array>
 
 </resources>

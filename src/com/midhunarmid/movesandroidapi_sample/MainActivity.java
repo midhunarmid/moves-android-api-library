@@ -101,6 +101,21 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 		case 14: // Get Storyline PastDays
 			MovesAPI.getStoryline_PastDays(storylineHandler, "31", null, true);
 			break;
+		case 16: // Get Activities Day
+			MovesAPI.getActivities_SingleDay(storylineHandler, "20140318", null);
+			break;
+		case 17: // Get Activities Week
+			MovesAPI.getActivities_SpecificWeek(storylineHandler, "2014-W09", null);
+			break;
+		case 18: // Get Activities Month
+			MovesAPI.getActivities_SpecificMonth(storylineHandler, "201403", "20140314T073812Z");
+			break;
+		case 19: // Get Activities Range
+			MovesAPI.getActivities_WithinRange(storylineHandler, "20140201", "20140228", null);
+			break;
+		case 20: // Get Activities PastDays
+			MovesAPI.getActivities_PastDays(storylineHandler, "31", null);
+			break;
 		default:
 			toggleProgress(false);
 			break;
