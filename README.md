@@ -57,3 +57,7 @@ Contact
 -------
 <i>Please feel free to use this library, and give your feedbacks to improve it. You can reach me at </i> midhunarmid@gmail.com
 <br><br>--- Midhu
+
+<br><br>
+Read more about <a href="http://midhunarmid.github.io/moves-android-api-library/">Moves Android API Library Project</a>
+<br><br>
