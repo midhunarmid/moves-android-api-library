@@ -7,12 +7,12 @@ Completed API Methods:
   + Authentication
   + Profile
   + Summary
+  + Activities
+  + Storyline
   + ... more will update soon
 
 Remaining Pipelined Tasks:
-  + Activities
   + Places
-  + Storyline
   + Activity list
   + Notifications
 
@@ -49,6 +49,11 @@ You will get notified with success and failure responses at :
 	
 </code>
 
+Disclaimer
+----------
+This API library project is using data from <a href="https://dev.moves-app.com/docs/api">Moves API</a> but this project is not endorsed by Moves. <a href="http://www.moves-app.com/">Moves</a> is a trademark of ProtoGeo Oy.
 
-
-<i>Please feel free to use this library, and give your feedbacks to improve it.</i>
+Contact
+-------
+<i>Please feel free to use this library, and give your feedbacks to improve it. You can reach me at </i> midhunarmid@gmail.com
+<br><br>--- Midhu
