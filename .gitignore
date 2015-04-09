@@ -1,0 +1,4 @@
+*.class
+bin/AndroidManifest.xml
+bin/movesandroidapi.jar
+gen/com/midhunarmid/movesapi/BuildConfig.java

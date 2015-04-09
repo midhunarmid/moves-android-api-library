@@ -1,5 +1,6 @@
 package com.midhunarmid.movesapi.auth;
 
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +25,10 @@ import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout.LayoutParams;
 
 import com.midhunarmid.movesapi.MovesAPI;
 import com.midhunarmid.movesapi.MovesHandler;
-import com.midhunarmid.movesapi.R;
 import com.midhunarmid.movesapi.util.MovesStatus;
 import com.midhunarmid.movesapi.util.Utilities;
 
@@ -68,12 +70,15 @@ public class MovesLoginFragment extends DialogFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setStyle(DialogFragment.STYLE_NO_FRAME, android.R.style.Theme_Black_NoTitleBar);
+		setStyle(DialogFragment.STYLE_NO_FRAME, getCurrentActivityTheme(getActivity()));
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.webview, container, false);
+		mAuthWebView = new WebView(getActivity());
+		LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+		mAuthWebView.setLayoutParams(layoutParams);
+		return mAuthWebView;
 	}
 	
 	@Override
@@ -81,10 +86,8 @@ public class MovesLoginFragment extends DialogFragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		mDialog = new ProgressDialog(getActivity());
-		mDialog.setMessage(getString(R.string.loading));
+		mDialog.setMessage("Loading");
 		mDialog.setCancelable(false);
-		
-		mAuthWebView = (WebView) getView().findViewById(R.id.webView);
 		
         try {
             Uri uri = createAuthWithAppUri("moves", "app", "/authorize").build();
@@ -275,8 +278,22 @@ public class MovesLoginFragment extends DialogFragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (mDialog != null) {
-			mDialog.dismiss();
-		}
+		killProgressDialog();
 	}
+	
+    public int getCurrentActivityTheme(Activity activity) {
+        /* Set default theme as Theme_Black_NoTitleBar, then try to update this fragment with the current activity theme */
+        int themeResourceId = android.R.style.Theme_Black_NoTitleBar;
+        try {
+            /* No direct API is available to do this action, so we are using method reflection here to achieve this goal */
+            Class<?> reflectionClass = ContextThemeWrapper.class;
+            Method method = reflectionClass.getMethod("getThemeResId");
+            method.setAccessible(true);
+            themeResourceId = (Integer) method.invoke(activity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return themeResourceId;
+    }
 }
