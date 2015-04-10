@@ -120,7 +120,9 @@ public class AuthData {
 			Calendar expiryTime = Calendar.getInstance();
 			expiryTime.setTimeInMillis(expiresInMillis);
 			expiryTime.add(Calendar.DATE, -(expiresIn));
-			boolean isRefreshNeeded = expiryTime.after(Calendar.getInstance());
+			
+			Calendar now = Calendar.getInstance();
+			boolean isRefreshNeeded = expiryTime.before(now);
 			return isRefreshNeeded;
 		} catch (Exception e) {
 			e.printStackTrace();

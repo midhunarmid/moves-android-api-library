@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import android.util.Log;
+
 import com.midhunarmid.movesapi.MovesAPI;
 import com.midhunarmid.movesapi.MovesHandler;
 import com.midhunarmid.movesapi.auth.AuthData;
@@ -27,6 +29,9 @@ import com.midhunarmid.movesapi.util.Utilities;
  */
 public class HTTPCall {
 	
+	private static final boolean isDebugging = true;
+	private static final String TAG = "HTTPCall";
+	
 	/**
 	 * Call this method to refresh the access token. This method will return the new access token and also sets all those
 	 * new access details in {@link MovesAPIPreferences} 
@@ -44,6 +49,11 @@ public class HTTPCall {
 		nameValuePairs.put("client_secret", MovesAPI.getClientDetails().getClientSecret());
 		
 		URL url 	= new URL(MovesAPI.API_AUTH_BASE + MovesAPI.API_PATH_ACCESSTOKEN + "?" + Utilities.encodeUrl(nameValuePairs));
+		
+		if (isDebugging) {
+			Log.i(TAG, "API Endpoint : " + url.toString());
+		}
+		
 		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 		urlConnection.setRequestMethod("POST");
 		urlConnection.setDoInput(true);
@@ -55,6 +65,11 @@ public class HTTPCall {
 		}
 		
 		String response		= Utilities.readStream(urlConnection.getInputStream());
+		
+		if (isDebugging) {
+			Log.i(TAG, "refreshAccessToken() : " + response);
+		}
+		
 		JSONObject jsonObj 	= (JSONObject) new JSONTokener(response).nextValue();
 		String access_token	= jsonObj.optString("access_token");
 		String user_id		= jsonObj.optString("user_id");
@@ -84,6 +99,11 @@ public class HTTPCall {
 					nameValuePairs.put("access_token", AuthData.getAuthData().getAccessToken());
 					
 					URL url 	= new URL(MovesAPI.API_BASE + MovesAPI.API_PATH_PROFILE + "?" + Utilities.encodeUrl(nameValuePairs));
+					
+					if (isDebugging) {
+						Log.i(TAG, "API Endpoint : " + url.toString());
+					}
+					
 					HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 					urlConnection.setRequestMethod("GET");
 					urlConnection.setDoInput(true);
@@ -96,6 +116,11 @@ public class HTTPCall {
 					}
 					
 					String response = Utilities.readStream(urlConnection.getInputStream());
+					
+					if (isDebugging) {
+						Log.i(TAG, "getProfile() : " + response);
+					}
+					
 					JSONObject jsonObject 	= (JSONObject) new JSONTokener(response).nextValue();
 					ProfileData profileData = ProfileData.parse(jsonObject);
 					handler.onSuccess(profileData);
@@ -142,6 +167,11 @@ public class HTTPCall {
 					
 					
 					URL url 	= new URL(MovesAPI.API_BASE + MovesAPI.API_PATH_SUMMARY + (specificSummary != null ? specificSummary : "") + "?" + Utilities.encodeUrl(nameValuePairs));
+					
+					if (isDebugging) {
+						Log.i(TAG, "API Endpoint : " + url.toString());
+					}
+					
 					HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 					urlConnection.setRequestMethod("GET");
 					urlConnection.setDoInput(true);
@@ -154,6 +184,11 @@ public class HTTPCall {
 					}
 					
 					String response = Utilities.readStream(urlConnection.getInputStream());
+					
+					if (isDebugging) {
+						Log.i(TAG, "getDailySummaryList() : " + response);
+					}
+					
 					Object object = new JSONTokener(response).nextValue();
 					if (object instanceof JSONArray) {
 						JSONArray jsonArray = (JSONArray) object;
@@ -218,6 +253,11 @@ public class HTTPCall {
 					
 					
 					URL url 	= new URL(MovesAPI.API_BASE + MovesAPI.API_PATH_STORYLINE + (specificSummary != null ? specificSummary : "") + "?" + Utilities.encodeUrl(nameValuePairs));
+					
+					if (isDebugging) {
+						Log.i(TAG, "API Endpoint : " + url.toString());
+					}
+					
 					HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 					urlConnection.setRequestMethod("GET");
 					urlConnection.setDoInput(true);
@@ -230,6 +270,11 @@ public class HTTPCall {
 					}
 					
 					String response = Utilities.readStream(urlConnection.getInputStream());
+					
+					if (isDebugging) {
+						Log.i(TAG, "getDailyStorylineList() : " + response);
+					}
+					
 					Object object = new JSONTokener(response).nextValue();
 					if (object instanceof JSONArray) {
 						JSONArray jsonArray = (JSONArray) object;
@@ -264,7 +309,7 @@ public class HTTPCall {
 	 * @param pastDays :  How many past days to return, including today (in users current time zone)
 	 * @param updatedSince : [optional] if set, return only days which data has been updated since
 	 * given time stamp in ISO 8601 (yyyyMMdd’T’HHmmssZ) format, pass <code>null</code> if not required.
-	 * @see <a href="https://dev.moves-app.com/docs/api_storyline">Moves Developer Page for Storyline</a>
+	 * @see <a href="https://dev.moves-app.com/docs/api_activity_list">Moves Developer Page for Activity list</a>
 	 */
 	public static void getDailyActivitiesList(final MovesHandler<ArrayList<StorylineData>> handler, 
 			final String specificSummary,
@@ -289,7 +334,12 @@ public class HTTPCall {
 					if (updatedSince != null && updatedSince.length() > 0) nameValuePairs.put("updatedSince", updatedSince);
 					
 					
-					URL url 	= new URL(MovesAPI.API_BASE + MovesAPI.API_PATH_STORYLINE + (specificSummary != null ? specificSummary : "") + "?" + Utilities.encodeUrl(nameValuePairs));
+					URL url 	= new URL(MovesAPI.API_BASE + MovesAPI.API_PATH_ACTIVITIES + (specificSummary != null ? specificSummary : "") + "?" + Utilities.encodeUrl(nameValuePairs));
+					
+					if (isDebugging) {
+						Log.i(TAG, "DailyActivitiesList API Endpoint : " + url.toString());
+					}
+					
 					HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 					urlConnection.setRequestMethod("GET");
 					urlConnection.setDoInput(true);
@@ -302,6 +352,11 @@ public class HTTPCall {
 					}
 					
 					String response = Utilities.readStream(urlConnection.getInputStream());
+					
+					if (isDebugging) {
+						Log.i(TAG, "getDailyActivitiesList() : " + response);
+					}
+					
 					Object object = new JSONTokener(response).nextValue();
 					if (object instanceof JSONArray) {
 						JSONArray jsonArray = (JSONArray) object;
